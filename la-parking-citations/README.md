@@ -2,28 +2,54 @@
 
 This project demonstrates an end-to-end data engineering workflow in Databricks using LA parking citation data and Los Angeles City Council district boundaries.
 
+The pipeline is implemented as a scheduled Databricks job that ingests, validates, transforms, enriches, and publishes citation data through Bronze, Silver, and Gold Delta tables.
+
 ## What it demonstrates
 
-- API ingestion into a Bronze Delta table
-- Schema inspection and data-quality checks
-- Silver-layer transformations and type normalization
+- REST API ingestion into a Bronze Delta table
+- PySpark and SQL-based transformations
+- Schema inspection and data-quality profiling
+- Silver-layer type normalization and validation
+- Data-quality enforcement with quarantine handling
 - Sensitive-field masking
 - Time and geospatial validation
 - GeoPandas / Shapely point-in-polygon matching
-- Enrichment of parking citations with City Council district assignments
-- Gold-layer Delta table creation
-- SQL validation of the final analytical dataset
+- Enrichment with Los Angeles City Council district assignments
+- Gold-layer analytical dataset creation
+- Scheduled Databricks job execution
+- Job monitoring and failure email notifications
+- SQL validation of pipeline outputs
 
 ## Architecture
 
-Bronze  
-Raw parking citation data preserved close to the source.
+```text
+LA Parking Citations API
+          |
+          v
+       Bronze
+          |
+          v
+ Transform + Validate
+          |
+     Data Quality
+       /       \
+      /         \
+   FAIL         PASS
+    |             |
+    v             v
+Quarantine      Silver
+                  |
+                  v
+          Geospatial Enrichment
+                  |
+                  v
+                 Gold
 
-Silver  
-Cleaned and normalized data with typed fields, quality checks, and masked sensitive values.
 
-Gold  
-Analysis-ready parking citation records enriched with City Council district information.
+## Data Sources
+
+- [Los Angeles Parking Citations](https://data.lacity.org/Transportation/Parking-Citations/wjz9-h9np) — City of Los Angeles open-data parking citation dataset accessed through the Socrata API.
+- [Los Angeles City Council District Boundaries](https://maps.lacity.org/lahub/rest/services) — Geographic boundary data used for point-in-polygon enrichment of citation locations.
 
 ## Tech
 
