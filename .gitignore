@@ -1,2 +1,4 @@
 .venv/
 runz-match-parser.ipynb
+*.docx
+*.doc
