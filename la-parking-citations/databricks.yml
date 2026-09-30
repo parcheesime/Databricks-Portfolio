@@ -1,0 +1,14 @@
+# Databricks Declarative Automation Bundle configuration
+# Defines the LA Parking Citations project and includes the
+# Databricks resource definitions used by the bundle.
+
+bundle:
+  name: la-parking-citations
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    default: true
+    mode: development

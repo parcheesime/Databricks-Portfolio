@@ -1,0 +1,41 @@
+# Lakeflow Job resource for the LA Parking Citations data pipeline.
+# Orchestrates the Bronze -> Silver -> Gold notebook workflow
+# and defines task dependencies and the scheduled pipeline run.
+
+resources:
+  jobs:
+    la_parking_citations_job:
+      name: LA Parking Citations
+
+      schedule:
+        quartz_cron_expression: "0 0 6 ? * SUN"
+        timezone_id: "America/Los_Angeles"
+        pause_status: "UNPAUSED"
+
+      tasks:
+        # Bronze: ingest source parking citation data
+        - task_key: ingest_bronze
+          notebook_task:
+            notebook_path: ../01_ingest_bronze
+          environment_key: default
+
+        # Silver: clean, validate, and quarantine records
+        - task_key: transform_silver
+          depends_on:
+            - task_key: ingest_bronze
+          notebook_task:
+            notebook_path: ../02_transform_silver
+          environment_key: default
+
+        # Gold: enrich valid citations with council districts
+        - task_key: enrich_gold
+          depends_on:
+            - task_key: transform_silver
+          notebook_task:
+            notebook_path: ../03_enrich_gold
+          environment_key: default
+
+      environments:
+        - environment_key: default
+          spec:
+            client: "1"
