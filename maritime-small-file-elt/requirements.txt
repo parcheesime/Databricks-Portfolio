@@ -1,0 +1,7 @@
+pandas
+requests
+lxml
+jupyterlab
+ipykernel
+pyarrow
+openpyxl

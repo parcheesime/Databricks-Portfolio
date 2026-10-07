@@ -1,0 +1,37 @@
+cat > .gitignore << 'EOF'
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local data
+data/raw/*
+data/sample/*
+
+# Keep directories in Git
+!data/raw/.gitkeep
+!data/sample/.gitkeep
+
+# Environment variables / secrets
+.env
+.env.*
+
+# Python virtual environments
+.venv*/
+**/.venv*/
+data/raw/*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+EOF
+*.odt
